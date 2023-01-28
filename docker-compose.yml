@@ -1,0 +1,31 @@
+version: "3.9"
+services:
+  postgres:
+    container_name: db
+    image: postgres:13-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=catchall-db
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./schema/catchall_tables.sql:/docker-entrypoint-initdb.d/catchall_tables.sql
+    command: -p 5433
+    networks:
+      - catchall
+  api:
+    container_name: catchall-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    networks:
+      - catchall
+networks:
+  catchall:
