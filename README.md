@@ -10,7 +10,7 @@ Or
 
 ```shell script
 go build -o catchall ./cmd/main.go
-./flighpathtracker
+./catchall
 ```
 
 | API Requests                                         |
